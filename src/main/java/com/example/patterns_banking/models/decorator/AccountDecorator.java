@@ -14,15 +14,6 @@ import lombok.NoArgsConstructor;
 public abstract class AccountDecorator extends Account {
   private Account account;
 
-//  Crear un nuevo decorador para controlar qué tanto dinero se le puede prestar a una persona en un retiro
-//  LIMITE sobre retiros: 20.000
-//  Vamos a mostrar el valor excedido y vamos a dejar la cuenta en 0
-//  I: 50k
-//  W: 60k
-//  T: 70k
-//  Se hizo el retiro y el excedente fue de 10k
-//  La cuenta me queda vacíá
-
   @Override
   public Long getId() {
     return account.getId();
@@ -75,7 +66,12 @@ public abstract class AccountDecorator extends Account {
 
   @Override
   public void withdraw(double amount) {
-    account.withdraw(amount);
+    if (amount > getBalance()) {
+      throw new IllegalArgumentException("Insufficient funds");
+    }
+    //pase el fee al decorator porque al manejarse desde acá el calculo balance -= (amount + fee) podía dar resultados
+    // negativos en el momento que se retira lo mismo que el balance, quedando con un nuevo balance de -fee
+    setBalance(getBalance() - amount) ;
   }
 
   @Override
