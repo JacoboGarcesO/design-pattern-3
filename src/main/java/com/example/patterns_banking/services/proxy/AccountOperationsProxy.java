@@ -25,7 +25,9 @@ public class AccountOperationsProxy implements IAccountOperations {
 
   @Override
   public Account createAccount(AccountDTO accountDTO) {
-    ICommand<Account> command = new CreateAccountCommand(accountRepository, customerRepository, accountFactoryProvider, accountDTO);
+    ICommand<Account> command = new CreateAccountCommand(accountRepository,
+                                                         customerRepository,
+                                                         accountFactoryProvider, accountDTO);
     return command.execute();
   }
 

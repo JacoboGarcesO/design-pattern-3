@@ -43,10 +43,20 @@ public class WithdrawCommand implements ICommand<Account> {
         if (accountOpt.isEmpty()) {
             throw new IllegalArgumentException("Account not found with ID: " + accountId);
         }
-
         Account account = accountOpt.get();
-        account.withdraw(amount);
 
+        final double MONTO_MAXIMO = 20000;
+        final double SALDO_ACTUAL = account.getBalance();
+
+        if(amount > SALDO_ACTUAL  && (amount-SALDO_ACTUAL > MONTO_MAXIMO)){
+            throw new IllegalArgumentException("Retiro supera LIMITE sobre retiros de :" + MONTO_MAXIMO);
+        }
+        if(amount > SALDO_ACTUAL  && (amount-SALDO_ACTUAL < MONTO_MAXIMO)){
+            account.withdraw(account.getBalance());
+            accountRepository.save(account);
+            throw new IllegalArgumentException("Se Hizo el retiro y el excedente fue : " + (SALDO_ACTUAL-amount));
+        }
+        account.withdraw(amount);
         return accountRepository.save(account);
     }
 }
