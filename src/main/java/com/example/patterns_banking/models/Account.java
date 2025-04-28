@@ -23,6 +23,7 @@ public abstract class Account {
 
   public abstract Double calculateDepositFee(Double amount);
   public abstract double calculateWithdrawalFee(double amount);
+  public abstract double calculateLimitWithdrawal();
 
   public void deposit(Double amount) {
     double fee = calculateDepositFee(amount);

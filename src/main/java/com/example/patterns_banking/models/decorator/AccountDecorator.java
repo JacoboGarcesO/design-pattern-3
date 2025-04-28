@@ -82,4 +82,9 @@ public abstract class AccountDecorator extends Account {
   public void deposit(Double amount) {
     account.deposit(amount);
   }
+
+  @Override
+  public double calculateLimitWithdrawal() {
+    return account.calculateLimitWithdrawal();
+  }
 }
